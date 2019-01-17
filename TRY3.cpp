@@ -102,6 +102,18 @@ class Student{
                 for(j=0;j<6;j++){
                     nowi = A[i];
                     nowj = B[j];
+                    D = DONT(nowi,nowj,Record,Max,color,enemyColor);
+                    if(color[nowi][nowj]==inputColor&&!D){
+                        x=nowi;
+                        y=nowj;
+                        return;
+                    }
+                }
+            }
+            for(i=0;i<5;i++){
+                for(j=0;j<6;j++){
+                    nowi = A[i];
+                    nowj = B[j];
                     if(color[nowi][nowj]==White){
                         x=nowi;
                         y=nowj;
