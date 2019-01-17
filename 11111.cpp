@@ -10,18 +10,6 @@ class Student{
             if(color[4][0]==White) {x = 4; y = 0; return;}
             if(color[0][5]==White) {x = 0; y = 5; return;}
             if(color[4][5]==White) {x = 4; y = 5; return;}
-            /*for(i=0;i<5;i++){
-                for(j=0;j<6;j++){
-                    nowi = A[i];
-                    nowj = B[j];
-                    M = bomb(nowi,nowj,Record,Max,color,enemyColor);
-                    if((color[nowi][nowj]==inputColor)&&!M){
-                        x=nowi;
-                        y=nowj;
-                        return;
-                    }
-                }
-            }*/
             for(i=0;i<5;i++){
                 for(j=0;j<6;j++){
                     nowi = A[i];
