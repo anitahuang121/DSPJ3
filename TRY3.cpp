@@ -3,7 +3,7 @@ class Student{
     public:
         void makeMove(int Record[5][6], int Max[5][6], Color color[5][6], Color inputColor){
             int enemyColor;
-            int i,j,nowi,nowj,M,D,P;
+            int i,j,nowi,nowj,M,D,P,E;
             if(inputColor==Red) enemyColor = Blue;
             else enemyColor = Red;
             //take the four dots
@@ -24,13 +24,14 @@ class Student{
                     }
                 }
             }
-            //first row,if
+            //for edges , if you can bomb faster than your neighbors ,than plus one;
             i = 0;
             for(j=0;j<6;j++){
-                    nowi = A[i];
                     nowj = B[j];
+                    D = DONT(nowi,nowj,Record,Max,color,enemyColor);
+                    //E = enemyhere(nowi,nowj,color,enemyColor);
                     M = here(nowi,nowj,Record,Max,color,enemyColor);
-                    if((color[nowi][nowj]==inputColor)&&M){
+                    if((color[nowi][nowj]==inputColor||White)&&M&&!D){
                         x=nowi;
                         y=nowj;
                         return;
@@ -38,10 +39,11 @@ class Student{
                 }
             i = 4;
             for(j=0;j<6;j++){
-                    nowi = A[i];
                     nowj = B[j];
+                    D = DONT(nowi,nowj,Record,Max,color,enemyColor);
+                    //E = enemyhere(nowi,nowj,color,enemyColor);
                     M = here(nowi,nowj,Record,Max,color,enemyColor);
-                    if((color[nowi][nowj]==inputColor)&&M){
+                    if((color[nowi][nowj]==inputColor||White)&&M&&!D){
                         x=nowi;
                         y=nowj;
                         return;
@@ -50,9 +52,10 @@ class Student{
             j = 0;
             for(i=0;i<5;i++){
                     nowi = A[i];
-                    nowj = B[j];
+                    D = DONT(nowi,nowj,Record,Max,color,enemyColor);
+                    //E = enemyhere(nowi,nowj,color,enemyColor);
                     M = here(nowi,nowj,Record,Max,color,enemyColor);
-                    if((color[nowi][nowj]==inputColor)&&M){
+                    if((color[nowi][nowj]==inputColor||White)&&M&&!D){
                         x=nowi;
                         y=nowj;
                         return;
@@ -61,9 +64,10 @@ class Student{
             j = 5;
             for(i=0;i<5;i++){
                     nowi = A[i];
-                    nowj = B[j];
+                    D = DONT(nowi,nowj,Record,Max,color,enemyColor);
+                    //E = enemyhere(nowi,nowj,color,enemyColor);
                     M = here(nowi,nowj,Record,Max,color,enemyColor);
-                    if((color[nowi][nowj]==inputColor)&&M){
+                    if((color[nowi][nowj]==inputColor||White)&&M&&!D){
                         x=nowi;
                         y=nowj;
                         return;
@@ -73,8 +77,9 @@ class Student{
                 for(j=0;j<6;j++){
                     nowi = A[i];
                     nowj = B[j];
+                    D = DONT(nowi,nowj,Record,Max,color,enemyColor);
                     P = PLUS(nowi,nowj,Record,Max,color,enemyColor);
-                    if((color[nowi][nowj]==inputColor)&&P){
+                    if((color[nowi][nowj]==inputColor)&&P&&!D){
                         x=nowi;
                         y=nowj;
                         return;
@@ -97,7 +102,6 @@ class Student{
                 for(j=0;j<6;j++){
                     nowi = A[i];
                     nowj = B[j];
-                    D = DONT(nowi,nowj,Record,Max,color,enemyColor);
                     if(color[nowi][nowj]==White){
                         x=nowi;
                         y=nowj;
@@ -165,93 +169,127 @@ class Student{
         bool here(int a,int b,int Record[5][6], int Max[5][6],Color color[5][6],int enemyColor){
             if(a==0&&b==0){
                 if(color[a+1][b]==enemyColor) {
-                    if(Max[a+1][b]-Record[a+1][b]<Max[a][b]-Record[a][b]) return true;
+                    if(Max[a+1][b]-Record[a+1][b]<=Max[a][b]-Record[a][b]) return true;
                 }
                 else if(color[a][b+1]==enemyColor){
-                    if(Max[a][b+1]-Record[a][b+1]<Max[a][b]-Record[a][b]) return true;
+                    if(Max[a][b+1]-Record[a][b+1]<=Max[a][b]-Record[a][b]) return true;
                 }
             }
             else if(a==0&&b==5){
                 if(color[a+1][b]==enemyColor) {
-                    if(Max[a+1][b]-Record[a+1][b]<Max[a][b]-Record[a][b]) return true;
+                    if(Max[a+1][b]-Record[a+1][b]<=Max[a][b]-Record[a][b]) return true;
                 }
                 else if(color[a][b-1]==enemyColor) {
-                    if(Max[a][b-1]-Record[a][b-1]<Max[a][b]-Record[a][b]) return true;
+                    if(Max[a][b-1]-Record[a][b-1]<=Max[a][b]-Record[a][b]) return true;
                 }
             }
             else if(a==4&&b==0){
                 if(color[a-1][b]==enemyColor) {
-                    if(Max[a-1][b]-Record[a-1][b]<Max[a][b]-Record[a][b]) return true;
+                    if(Max[a-1][b]-Record[a-1][b]<=Max[a][b]-Record[a][b]) return true;
                 }
                 else if(color[a][b+1]==enemyColor){
-                    if(Max[a][b+1]-Record[a][b+1]<Max[a][b]-Record[a][b]) return true;
+                    if(Max[a][b+1]-Record[a][b+1]<=Max[a][b]-Record[a][b]) return true;
                 }
             }
             else if(a==4&&b==5){
                 if(color[a-1][b]==enemyColor) {
-                    if(Max[a-1][b]-Record[a-1][b]<Max[a][b]-Record[a][b]) return true;
+                    if(Max[a-1][b]-Record[a-1][b]<=Max[a][b]-Record[a][b]) return true;
                 }
                 else if(color[a][b-1]==enemyColor) {
-                    if(Max[a][b-1]-Record[a][b-1]<Max[a][b]-Record[a][b]) return true;
+                    if(Max[a][b-1]-Record[a][b-1]<=Max[a][b]-Record[a][b]) return true;
                 }
             }
             else if(a==0){
                 if(color[a+1][b]==enemyColor) {
-                    if(Max[a+1][b]-Record[a+1][b]<Max[a][b]-Record[a][b]) return true;
+                    if(Max[a+1][b]-Record[a+1][b]<=Max[a][b]-Record[a][b]) return true;
                 }
                 else if(color[a][b+1]==enemyColor){
-                    if(Max[a][b+1]-Record[a][b+1]<Max[a][b]-Record[a][b]) return true;
+                    if(Max[a][b+1]-Record[a][b+1]<=Max[a][b]-Record[a][b]) return true;
                 }
                 else if(color[a][b-1]==enemyColor) {
-                    if(Max[a][b-1]-Record[a][b-1]<Max[a][b]-Record[a][b]) return true;
+                    if(Max[a][b-1]-Record[a][b-1]<=Max[a][b]-Record[a][b]) return true;
                 }
             }
             else if(a==4){
                 if(color[a-1][b]==enemyColor) {
-                    if(Max[a-1][b]-Record[a-1][b]<Max[a][b]-Record[a][b]) return true;
+                    if(Max[a-1][b]-Record[a-1][b]<=Max[a][b]-Record[a][b]) return true;
                 }
                 else if(color[a][b+1]==enemyColor){
-                    if(Max[a][b+1]-Record[a][b+1]<Max[a][b]-Record[a][b]) return true;
+                    if(Max[a][b+1]-Record[a][b+1]<=Max[a][b]-Record[a][b]) return true;
                 }
                 else if(color[a][b-1]==enemyColor) {
-                    if(Max[a][b-1]-Record[a][b-1]<Max[a][b]-Record[a][b]) return true;
+                    if(Max[a][b-1]-Record[a][b-1]<=Max[a][b]-Record[a][b]) return true;
                 }
             }
             else if(b==0){
                 if(color[a+1][b]==enemyColor) {
-                    if(Max[a+1][b]-Record[a+1][b]<Max[a][b]-Record[a][b]) return true;
+                    if(Max[a+1][b]-Record[a+1][b]<=Max[a][b]-Record[a][b]) return true;
                 }
                 else if(color[a-1][b]==enemyColor) {
-                    if(Max[a-1][b]-Record[a-1][b]<Max[a][b]-Record[a][b]) return true;
+                    if(Max[a-1][b]-Record[a-1][b]<=Max[a][b]-Record[a][b]) return true;
                 }
                 else if(color[a][b+1]==enemyColor){
-                    if(Max[a][b+1]-Record[a][b+1]<Max[a][b]-Record[a][b]) return true;
+                    if(Max[a][b+1]-Record[a][b+1]<=Max[a][b]-Record[a][b]) return true;
                 }
             }
             else if(b==5){
                 if(color[a+1][b]==enemyColor) {
-                    if(Max[a+1][b]-Record[a+1][b]<Max[a][b]-Record[a][b]) return true;
+                    if(Max[a+1][b]-Record[a+1][b]<=Max[a][b]-Record[a][b]) return true;
                 }
                 else if(color[a-1][b]==enemyColor) {
-                    if(Max[a-1][b]-Record[a-1][b]<Max[a][b]-Record[a][b]) return true;
+                    if(Max[a-1][b]-Record[a-1][b]<=Max[a][b]-Record[a][b]) return true;
                 }
                 else if(color[a][b-1]==enemyColor){
-                    if(Max[a][b-1]-Record[a][b-1]<Max[a][b]-Record[a][b]) return true;
+                    if(Max[a][b-1]-Record[a][b-1]<=Max[a][b]-Record[a][b]) return true;
                 }
             }
             else {
                 if(color[a+1][b]==enemyColor) {
-                    if(Max[a+1][b]-Record[a+1][b]<Max[a][b]-Record[a][b]) return true;
+                    if(Max[a+1][b]-Record[a+1][b]<=Max[a][b]-Record[a][b]) return true;
                 }
                 else if(color[a-1][b]==enemyColor) {
-                    if(Max[a-1][b]-Record[a-1][b]<Max[a][b]-Record[a][b]) return true;
+                    if(Max[a-1][b]-Record[a-1][b]<=Max[a][b]-Record[a][b]) return true;
                 }
                 else if(color[a][b+1]==enemyColor){
-                    if(Max[a][b+1]-Record[a][b+1]<Max[a][b]-Record[a][b]) return true;
+                    if(Max[a][b+1]-Record[a][b+1]<=Max[a][b]-Record[a][b]) return true;
                 }
                 else if(color[a][b-1]==enemyColor){
-                    if(Max[a][b-1]-Record[a][b-1]<Max[a][b]-Record[a][b]) return true;
+                    if(Max[a][b-1]-Record[a][b-1]<=Max[a][b]-Record[a][b]) return true;
                 }
+                else
+                    return false;
+            }
+            return false;
+        }
+        //there is enemy near you
+        bool enemyhere(int a,int b,Color color[5][6],int enemyColor){
+            if(a==0&&b==0){
+                if(color[a+1][b]==enemyColor||color[a][b+1]==enemyColor) return true;
+            }
+            else if(a==0&&b==5){
+                if(color[a+1][b]==enemyColor||color[a][b-1]==enemyColor) return true;
+            }
+            else if(a==4&&b==0){
+                if(color[a-1][b]==enemyColor||color[a][b+1]==enemyColor) return true;
+            }
+            else if(a==4&&b==5){
+                if(color[a-1][b]==enemyColor||color[a][b-1]==enemyColor) return true;
+            }
+            else if(a==0){
+                if(color[a+1][b]==enemyColor||color[a][b+1]==enemyColor||color[a][b-1]==enemyColor) return true;
+                }
+            else if(a==4){
+                if(color[a-1][b]==enemyColor||color[a][b+1]==enemyColor||color[a][b-1]==enemyColor) return true;
+                }
+            else if(b==0){
+                if(color[a+1][b]==enemyColor||color[a-1][b]==enemyColor||color[a][b+1]==enemyColor) return true;
+                }
+            else if(b==5){
+                if(color[a+1][b]==enemyColor||color[a-1][b]==enemyColor||color[a][b-1]==enemyColor) return true;
+                }
+            else {
+                if(color[a-1][b]==enemyColor||color[a+1][b]==enemyColor||color[a][b-1]==enemyColor||color[a][b+1]==enemyColor)
+                    return true;
                 else
                     return false;
             }
